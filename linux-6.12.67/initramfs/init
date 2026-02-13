@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# 挂载必要的文件系统
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t devtmpfs none /dev 2>/dev/null || mknod /dev/console c 5 1
+
+# 显示欢迎信息
+echo ""
+echo "=========================================="
+echo "  Linux Kernel Task 1 测试环境"
+echo "=========================================="
+echo ""
+
+# 显示 CPU 信息
+echo "CPU 数量: $(grep -c processor /proc/cpuinfo)"
+echo ""
+
+# 检查纠缠 CPU 接口
+if [ -f /proc/sys/kernel/entangled_cpus_1 ]; then
+    echo "纠缠 CPU 接口已启用!"
+    echo "  /proc/sys/kernel/entangled_cpus_1 = $(cat /proc/sys/kernel/entangled_cpus_1)"
+    echo "  /proc/sys/kernel/entangled_cpus_2 = $(cat /proc/sys/kernel/entangled_cpus_2)"
+    echo ""
+    echo "设置纠缠 CPU:"
+    echo "  echo 0 > /proc/sys/kernel/entangled_cpus_1"
+    echo "  echo 1 > /proc/sys/kernel/entangled_cpus_2"
+else
+    echo "警告: 未找到纠缠 CPU 接口"
+    echo "请检查内核是否正确编译"
+fi
+
+echo ""
+echo "启动 shell..."
+echo ""
+
+# 启动 shell
+exec /bin/sh

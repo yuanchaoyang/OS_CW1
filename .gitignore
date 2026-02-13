@@ -1,0 +1,6 @@
+OS26_CW1_Tests/
+OS26_CW1_Tests-master/
+*.tar.xz
+*.qcow2
+*.o
+*.ko
